@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - O Aumigo da Vizinhança</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+        body { 
+            background-color: #85C1E9;
+            background-image: url('/media/Background.png');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /* Camada de Transição Diagonal */
+        #transition-overlay {
+            position: fixed;
+            top: 0;
+            left: -150%; /* Começa fora da tela à esquerda */
+            width: 150%;
+            height: 100%;
+            background: #111;
+            z-index: 9999;
+            transform: skewX(-20deg); /* Inclinação diagonal */
+            transition: left 0.8s ease-in;
+            pointer-events: none;
+        }
+
+        #transition-overlay.active {
+            left: -20%; /* Atravessa a tela */
+        }
+
+        /* Estilo do Mascote Balançando */
+        .aumigo-home {
+            position: relative;
+            margin-bottom: 20px;
+            transform-origin: top center;
+            animation: balanco 5s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes balanco {
+            0% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+            100% { transform: rotate(-3deg); }
+        }
+
+        /* Conteúdo de Texto */
+        .content {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 30px;
+            border: 4px solid #E74C3C;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            z-index: 5;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #E74C3C;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        p {
+            color: #2980B9;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        /* Botão Iniciar Estilo Herói */
+        #btn-iniciar {
+            background: #E74C3C;
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #C0392B;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        #btn-iniciar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 11px 0 #C0392B;
+            background: #D63031;
+        }
+
+        #btn-iniciar:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #C0392B;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="transition-overlay"></div>
+
+    <div class="aumigo-home">
+        <img src="/media/Aumigo.png" alt="Aumigo da Vizinhança" height="400">
+    </div>
+
+    <div class="content">
+        <h1>Aumigo da Vizinhança</h1>
+        <p>Cuidando do seu pet com superpoderes!</p>
+        <button id="btn-iniciar" onclick="iniciarChat()">Iniciar Atendimento</button>
+    </div>
+
+    <script>
+        function iniciarChat() {
+            // Ativa a animação diagonal
+            const overlay = document.getElementById('transition-overlay');
+            overlay.classList.add('active');
+
+            // Espera a animação terminar (800ms) e redireciona
+            setTimeout(() => {
+                window.location.href = 'chatbot.html';
+            }, 800);
+        }
+    </script>
+</body>
+</html>
