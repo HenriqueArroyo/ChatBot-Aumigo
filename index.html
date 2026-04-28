@@ -19,33 +19,45 @@
             align-items: center;
             overflow: hidden;
             text-align: center;
+            padding: 20px; /* Evita que o conteúdo cole nas bordas do celular */
         }
 
         /* Camada de Transição Diagonal */
         #transition-overlay {
             position: fixed;
             top: 0;
-            left: -150%; /* Começa fora da tela à esquerda */
-            width: 150%;
+            left: -200%; /* Aumentado para garantir que cubra qualquer formato de tela */
+            width: 200%;
             height: 100%;
             background: #111;
             z-index: 9999;
-            transform: skewX(-20deg); /* Inclinação diagonal */
+            transform: skewX(-20deg);
             transition: left 0.8s ease-in;
             pointer-events: none;
         }
 
         #transition-overlay.active {
-            left: -20%; /* Atravessa a tela */
+            left: -30%; /* Atravessa e cobre toda a tela */
         }
 
         /* Estilo do Mascote Balançando */
         .aumigo-home {
-            position: relative;
+            position: absolute;
             margin-bottom: 20px;
+            top: 0;
+            right: 20vh;
             transform-origin: top center;
             animation: balanco 5s ease-in-out infinite;
             z-index: 10;
+        }
+
+        /* Controle responsivo do tamanho do mascote */
+        .aumigo-home img {
+            height: 400px; /* Tamanho padrão para PC */
+            max-height: 40vh; /* No máximo 40% da altura da tela */
+            max-width: 90vw; /* Não ultrapassa a largura da tela */
+            width: auto;
+            object-fit: contain;
         }
 
         @keyframes balanco {
@@ -62,6 +74,7 @@
             border: 4px solid #E74C3C;
             box-shadow: 0 15px 35px rgba(0,0,0,0.3);
             z-index: 5;
+            width: 100%;
             max-width: 500px;
         }
 
@@ -93,6 +106,8 @@
             box-shadow: 0 8px 0 #C0392B;
             transition: all 0.2s;
             text-transform: uppercase;
+            width: 100%;
+            max-width: 300px;
         }
 
         #btn-iniciar:hover {
@@ -105,6 +120,34 @@
             transform: translateY(4px);
             box-shadow: 0 4px 0 #C0392B;
         }
+
+        /* =========================================
+           REGRAS DE RESPONSIVIDADE (MOBILE) 
+           ========================================= */
+        @media (max-width: 600px) {
+            .content {
+                padding: 25px 20px;
+                border-width: 3px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+                margin-bottom: 20px;
+            }
+
+            #btn-iniciar {
+                padding: 15px 20px;
+                font-size: 1.2rem;
+            }
+
+            .aumigo-home img {
+                max-height: 35vh; /* Dá um pouco mais de espaço no celular */
+            }
+        }
     </style>
 </head>
 <body>
@@ -112,13 +155,13 @@
     <div id="transition-overlay"></div>
 
     <div class="aumigo-home">
-        <img src="/media/Aumigo.png" alt="Aumigo da Vizinhança" height="400">
+        <img src="/media/Aumigo.png" alt="Aumigo da Vizinhança">
     </div>
 
     <div class="content">
         <h1>Aumigo da Vizinhança</h1>
         <p>Cuidando do seu pet com superpoderes!</p>
-        <button id="btn-iniciar" onclick="iniciarChat()">Iniciar Atendimento</button>
+        <button id="btn-iniciar" onclick="iniciarChat()">Iniciar</button>
     </div>
 
     <script>
