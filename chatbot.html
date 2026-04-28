@@ -46,6 +46,13 @@
             position: absolute;
             top: 0;
             left: 10vh;
+            transform-origin: top center; /* Define que ele está "pendurado" pelo topo */
+            animation: balanco 5s ease-in-out infinite; /* Animação suave que dura 5 segundos e repete para sempre */
+        }
+        @keyframes balanco {
+            0% { transform: rotate(-2deg); }   /* Começa levemente inclinado para a esquerda */
+            50% { transform: rotate(2deg); }   /* Vai levemente para a direita */
+            100% { transform: rotate(-2deg); } /* Volta para a esquerda para fechar o ciclo */
         }
        
 .logo-box img {
