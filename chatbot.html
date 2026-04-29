@@ -5,99 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clínica Pet - O Aumigo da Vizinhança</title>
     <style>
-        /* Reset básico para tirar margens chatas e definir a fonte */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        
-        /* O fundo azul da página e centralização do chat */
-        body { background-color: #85C1E9; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        body { background-color: #85C1E9; display: flex; justify-content: center; align-items: center; height: 100vh; }
 
-        /* Container principal do Chat (o celularzinho) */
-        #chat-container { 
-            width: 400px; 
-            height: 550px; 
-            background: white; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25); 
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden; 
-            border: 2px solid #E74C3C; 
-            position: relative;
-            z-index: 10;
-        }
+        #chat-container { width: 400px; height: 550px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); display: flex; flex-direction: column; overflow: hidden; border: 2px solid #E74C3C; }
 
-        /* Header: Onde fica o nome e o relógio */
+        /* Header inspirado no traje do Cão-Aranha (Vermelho, Azul e Amarelo) */
         #chat-header { background: #E74C3C; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 4px solid #F1C40F; }
         .brand { display: flex; align-items: center; gap: 10px; }
-        
-        /* Círculo da logo no topo */
-        .logo-box { width: 35px; height: 35px; background: #2980B9; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 2px solid #F1C40F; overflow: hidden; }
-        .logo-box img { width: 100%; height: 100%; object-fit: cover; }
-        #clock { font-family: monospace; font-size: 13px; opacity: 0.9; font-weight: bold; }
+.logo-box { width: 35px; height: 35px; background: #2980B9; color: #F1C40F; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 16px; border: 2px solid #F1C40F; overflow: hidden; }        #clock { font-family: monospace; font-size: 13px; opacity: 0.9; font-weight: bold; }
 
-        /* A "janela" onde as mensagens aparecem */
-        #chat-window { 
-            flex: 1; 
-            padding: 20px; 
-            overflow-y: auto; 
-            background-color: #f9f9f9; 
-            background-image: radial-gradient(#E74C3C 0.5px, transparent 0.5px); 
-            background-size: 10px 10px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-        }
-
-        /* Estilo das bolhas de mensagem */
+        /* Janela de Chat */
+        #chat-window { flex: 1; padding: 20px; overflow-y: auto; background: #FDFEFE; display: flex; flex-direction: column; gap: 10px; background-image: radial-gradient(#E74C3C 0.5px, transparent 0.5px); background-size: 10px 10px; background-color: #f9f9f9; }
         .msg { padding: 10px 14px; border-radius: 15px; font-size: 14px; max-width: 80%; word-wrap: break-word; line-height: 1.4; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .user { background: #2980B9; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
         .bot { background: #FFF3E0; color: #333; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #F1C40F; }
 
-        /* Rodapé com campo de texto e botão */
+        /* Controles */
         #input-area { display: flex; padding: 15px; background: #fff; border-top: 2px solid #2980B9; }
-        #user-input { flex: 1; padding: 10px; border: 2px solid #ddd; border-radius: 20px; outline: none; }
+        #user-input { flex: 1; padding: 10px; border: 2px solid #ddd; border-radius: 20px; outline: none; transition: 0.3s; }
         #user-input:focus { border-color: #E74C3C; }
-        #send-btn { background: #E74C3C; color: white; border: none; padding: 0 15px; margin-left: 8px; border-radius: 20px; cursor: pointer; font-weight: bold; }
-
-        /* Decoração: Imagem de fundo e o mascote pendurado */
-        .fundo { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .fundo img { width: 100%; height: 100%; object-fit: cover; }
-
-        .aumigo { position: absolute; top: 0; left: 10vh; transform-origin: top center; animation: balanco 5s ease-in-out infinite; z-index: 5; }
-        
-        /* Animação para o cachorro ficar balançando como se estivesse numa teia */
-        @keyframes balanco {
-            0%, 100% { transform: rotate(-2deg); }
-            50% { transform: rotate(2deg); }
+        #send-btn { background: #E74C3C; color: white; border: none; padding: 0 15px; margin-left: 8px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-weight: bold; }
+        #send-btn:hover { background: #C0392B; transform: scale(1.05); }
+       .fundo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Joga a div para trás de tudo */
         }
+        
+        .fundo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Garante que a imagem cubra a tela sem esticar/achatar */
+        }
+
+        .aumigo {
+            position: absolute;
+            top: 0;
+            left: 10vh;
+            transform-origin: top center; /* Define que ele está "pendurado" pelo topo */
+            animation: balanco 5s ease-in-out infinite; /* Animação suave que dura 5 segundos e repete para sempre */
+        }
+        @keyframes balanco {
+            0% { transform: rotate(-2deg); }   /* Começa levemente inclinado para a esquerda */
+            50% { transform: rotate(2deg); }   /* Vai levemente para a direita */
+            100% { transform: rotate(-2deg); } /* Volta para a esquerda para fechar o ciclo */
+        }
+       
+.logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garante que a imagem preencha todo o espaço sem perder a proporção */
+}
     </style>
 </head>
 <body>
-
-<div class="fundo"><img src="/media/Background.png" alt="Cidade"></div>
-<div class="aumigo"><img src="/media/Aumigo.png" alt="Cão Aranha" width="350"></div>
-
+<div class="fundo">
+    <img src="/media/Background.png" alt="" height="100%" width="100%">
+</div>
+<div class="aumigo">
+    <img src="/media/Aumigo.png" alt="" height="500" width="350">
+</div>
 <div id="chat-container">
     <div id="chat-header">
         <div class="brand">
             <div class="logo-box"><img src="/media/Media (1).jpg"></div>
-            <span style="font-weight: bold;">Aumigo da Vizinhança</span>
+            <span style="font-weight: bold; letter-spacing: 0.5px;">Aumigo da Vizinhança</span>
         </div>
         <div id="clock">00:00</div>
     </div>
 
     <div id="chat-window">
-        <div class="msg bot">Au au! 🐶 Sou o seu Aumigo da Vizinhança! Como posso usar meus superpoderes para ajudar o seu pet hoje? 🕸️</div>
+        <div class="msg bot">Au au! 🐶 Sou o seu Aumigo da Vizinhança, o cão-herói e veterinário de plantão! Como posso usar meus superpoderes para ajudar o seu pet hoje? 🕸️🦸‍♂️</div>
     </div>
 
     <div id="input-area">
-        <input type="text" id="user-input" placeholder="Pergunte sobre vacina, banho..." autocomplete="off">
+        <input type="text" id="user-input" placeholder="Pergunte sobre 'vacina', 'banho', 'ração'..." autocomplete="off">
         <button id="send-btn">Enviar</button>
     </div>
 </div>
 
 <script>
-    // 1. Atualiza o relógio do topo a cada segundo
+    // 1. Relógio Heróico
     function updateTime() {
         const now = new Date();
         document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
@@ -105,99 +97,117 @@
     setInterval(updateTime, 1000);
     updateTime();
 
-    // 2. Nossa "FAQ" interna. Se o usuário digitar algo que combine aqui, o bot responde na hora.
+    // 3. Banco de Dados do Cão-Herói (Cérebro do Bot)
     const brain = [
-        { key: "bom dia", resp: "Bom dia, aumigo! Meu sentido canino diz que hoje vai ser um dia de muitos petiscos! 🐾" },
-        { key: "vacina", resp: "As vacinas são o escudo do seu pet! Precisamos manter a V10 e a Antirrábica em dia. 💉🛡️" },
-        { key: "banho", resp: "Hora da limpeza! Atendemos de segunda a sábado. Ele vai sair cheirosinho! 🛁" },
-        { key: "contato", resp: "Pode latir para nós no (11) 4002-8922! 📱" },
-        { key: "endereco", resp: "Nossa base fica na Rua dos Ossos, 101 - Centro. Venha nos visitar! 🗺️" }
+        { key: "bom dia", resp: "Bom dia, aumigo! Meu sentido canino diz que hoje vai ser um dia de muitos petiscos e saúde! 🐾" },
+        { key: "boa tarde", resp: "Boa tarde! Pronto para salvar o dia e cuidar da saúde do seu parceiro peludo? 🦸‍♂️" },
+        { key: "nome", resp: "Eu sou o Aumigo da Vizinhança! Um cão-aranha veterinário pronto para proteger os pets da cidade! 🕸️🐶" },
+        { key: "vacina", resp: "As vacinas são o escudo protetor do seu pet! Precisamos manter a V10 e a Antirrábica em dia para ele brincar na rua seguro dos vilões (vírus)! 💉🛡️" },
+        { key: "ração", resp: "Hummm, ração! A energia de um herói vem de uma boa alimentação. Recomendamos rações Super Premium. Qual a idade e porte do seu pet? 🦴" },
+        { key: "comida", resp: "Lembre-se: nada de chocolate ou cebola para nós, cães! Isso é nossa Kryptonita! Dê sempre ração ou petiscos apropriados. 🥩" },
+        { key: "banho", resp: "Hora de tirar a poeira das batalhas! Nosso banho e tosa funciona de segunda a sábado. O seu pet vai sair mais cheiroso que petisco novo! 🛁🫧" },
+        { key: "tosa", resp: "Fazemos tosa na máquina, na tesoura e tosa higiênica. Uma capa (ou pelo) bem cuidada é essencial para um herói! ✂️🐕" },
+        { key: "pulga", resp: "Grrr! Pulgas e carrapatos são vilões terríveis! 🕷️ Mas não se preocupe, temos as melhores armas: Simparic, Bravecto e NexGard. Proteja seu amigo!" },
+        { key: "carrapato", resp: "Carrapatos transmitem doenças perigosas. Use antipulgas/carrapatos mensalmente! Se ver um grudado, traga aqui que nós fazemos o resgate seguro! 🦸‍♂️" },
+        { key: "castra", resp: "A castração é um ato de responsabilidade e amor. Previne doenças graves e ajuda o pet a ficar mais tranquilo. Quer marcar uma avaliação? 🏥" },
+        { key: "horario", resp: "Nosso QG veterinário atende de segunda a sexta, das 08:00 às 18:00. E sábados até as 13:00! ⏰" },
+        { key: "emergencia", resp: "Meu sentido aranha está apitando! Para emergências graves fora do horário, ligue para nosso parceiro 24h: (11) 99999-0000. 🚑🚨" },
+        { key: "endereco", resp: "Nossa base secreta (não tão secreta assim) fica na Rua dos Ossos, 101 - Centro. Jogue sua teia e venha nos visitar! 🗺️🕸️" },
+        { key: "consulta", resp: "A consulta com nossos super-veterinários custa R$ 120,00. Faremos um check-up completo no seu parceiro! 🩺🐶" },
+        { key: "gato", resp: "Apesar de eu ser um cão, eu respeito muito os felinos! (Até brinco com eles às vezes). Temos especialistas em medicina felina aqui na clínica também! 🐱❤️" },
+        { key: "contato", resp: "Pode latir para nós no telefone (11) 4002-8922 ou mandar um sinal de fumaça (WhatsApp) no mesmo número! 📱" }
     ];
 
     const windowChat = document.getElementById('chat-window');
     const inputField = document.getElementById('user-input');
     const button = document.getElementById('send-btn');
 
-    // 3. Função principal de envio
+    // Agora a função sendMessage é assíncrona (async) para esperar a API
     async function sendMessage() {
         const text = inputField.value.trim();
-        if (text === "") return; // Não envia se estiver vazio
+        if (text === "") return;
 
-        // Mostra a mensagem do usuário na tela
+        // Mensagem do Usuário
         appendMsg(text, 'user');
         inputField.value = "";
 
-        // Cria aquela mensagem de "pensando..."
+        // Efeito de carregamento
         const loading = document.createElement('div');
         loading.className = 'msg bot';
-        loading.innerText = "Usando sentido canino... 🐾";
+        loading.innerText = "Usando sentido canino para buscar a resposta... 🐾🕸️";
         windowChat.appendChild(loading);
         windowChat.scrollTop = windowChat.scrollHeight;
 
         try {
-            // Busca a resposta (Local ou API)
+            // Espera a resposta (seja do banco de dados ou da API)
             const response = await findResponse(text);
-            windowChat.removeChild(loading); // Remove o "pensando..."
-            appendMsg(response, 'bot');     // Coloca a resposta real
+            windowChat.removeChild(loading);
+            appendMsg(response, 'bot');
         } catch (error) {
             windowChat.removeChild(loading);
-            appendMsg("Minha teia falhou! Verifique a conexão (ou sua chave da API). 🕸️⚠️", 'bot');
+            appendMsg("Grrr! 🐶 Minha teia falhou e não consegui conectar. Tente novamente em alguns instantes!", 'bot');
+            console.error(error);
         }
     }
 
-    // 4. Lógica de decisão: Resposta pronta VS Inteligência Artificial
+    // Função que decide de onde vem a resposta
     async function findResponse(userInput) {
-        // Limpa o texto: tudo minúsculo e remove acentos
         const cleanInput = userInput.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        
-        // Tenta achar uma palavra-chave no nosso "brain"
         const match = brain.find(item => cleanInput.includes(item.key));
         
+        // Se achou no banco de dados, retorna logo com um pequeno delay falso
         if (match) {
-            // Pequeno delay para parecer que está digitando
-            return new Promise(resolve => setTimeout(() => resolve(match.resp), 600));
-        } else {
-            // Se não souber a resposta, chama o Gemini
+            return new Promise(resolve => setTimeout(() => resolve(match.resp), 800));
+        } 
+        // Se não achou, chama meus superpoderes (Gemini API)
+        else {
             return await chamarGemini(userInput);
         }
     }
 
-    // 5. Integração com a API do Gemini
+   // Função que conversa com a API do Gemini
     async function chamarGemini(mensagemUsuario) {
-        // --- INSIRA SUA CHAVE AQUI ---
+        
+        // COLOQUE SUA NOVA CHAVE AQUI DENTRO DAS ASPAS:
         const MINHA_CHAVE = 'AIzaSyCeGNfZqtzHYgrPIgrbIO6OfjJ-GTZ8Jmw'; 
 
-        if(!MINHA_CHAVE) return "Au! Preciso de uma chave de API para pensar melhor sobre isso... 🔑";
-
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${MINHA_CHAVE}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${MINHA_CHAVE}`;
         
-        // Aqui a gente "treina" o bot rapidamente dizendo quem ele é
-        const promptPersonalidade = `Você é o "Aumigo da Vizinhança", um cão-herói veterinário. Responda de forma curta (até 3 frases), use emojis de pet/herói e seja muito amigável. Pergunta: ${mensagemUsuario}`;
+        // Aqui nós injetamos a personalidade no Gemini antes de mandar a pergunta!
+        const promptPersonalidade = `Você é o "Aumigo da Vizinhança", um cão-herói (estilo homem-aranha) que trabalha como veterinário de plantão. Responda à pergunta do usuário de forma amigável, criativa, curta (no máximo 3 frases) e use emojis relacionados a cachorros ou heróis. Pergunta: ${mensagemUsuario}`;
 
         const corpoRequisicao = {
-            contents: [{ parts: [{ text: promptPersonalidade }] }]
+            contents: [{
+                parts: [{ text: promptPersonalidade }]
+            }]
         };
 
         const resposta = await fetch(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(corpoRequisicao)
         });
+
+        if (!resposta.ok) {
+            throw new Error('Falha na comunicação com a API do Gemini. Verifique sua chave!');
+        }
 
         const dados = await resposta.json();
         return dados.candidates[0].content.parts[0].text;
     }
 
-    // 6. Função para colocar o texto no HTML
     function appendMsg(text, side) {
         const div = document.createElement('div');
         div.className = `msg ${side}`;
-        div.innerHTML = text.replace(/\n/g, '<br>'); // Troca quebras de linha por <br>
+        // Para quebras de linha do Gemini funcionarem no HTML, trocamos \n por <br>
+        div.innerHTML = text.replace(/\n/g, '<br>'); 
         windowChat.appendChild(div);
-        windowChat.scrollTop = windowChat.scrollHeight; // Rola o chat para baixo
+        windowChat.scrollTop = windowChat.scrollHeight;
     }
 
-    // Atalhos: Clicar no botão ou apertar Enter
+    // Eventos
     button.onclick = sendMessage;
     inputField.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
 </script>
